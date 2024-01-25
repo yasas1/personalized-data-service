@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: personalized-data-service
+  datasource:
+    #url: jdbc:postgresql://localhost:5432/personalized_db
+    url: jdbc:postgresql://pg-db:5432/personalized_db
+    username: postgres
+    password: password
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+logging:
+  level:
+    sql: debug
+server:
+  port: 8080
+  error:
+    include-message: always
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
