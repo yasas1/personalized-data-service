@@ -18,15 +18,13 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
 
     @Override
-    public ProductDto createProduct(ProductDto productDto) {
-        Product product = productRepository.save(ObjectMapper.mapProductDtoToProduct(productDto));
-        return ObjectMapper.mapProductToProductDto(product);
+    public Product createProduct(ProductDto productDto) {
+        return productRepository.save(ObjectMapper.mapProductDtoToProduct(productDto));
     }
 
-    @Cacheable(value ="products")
+    @Cacheable(value = "products")
     @Override
-    public ProductDto getProductById(String productId) {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product is not found for the id " + productId));
-        return ObjectMapper.mapProductToProductDto(product);
+    public Product getProductById(String productId) {
+        return productRepository.findById(productId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product is not found for the id " + productId));
     }
 }

@@ -3,7 +3,9 @@ package com.example.personalizeddataservice.controller;
 import com.example.personalizeddataservice.domain.dto.ResultResponse;
 import com.example.personalizeddataservice.domain.dto.ShopperDto;
 import com.example.personalizeddataservice.domain.dto.ShopperPersonalizedProductDto;
+import com.example.personalizeddataservice.domain.model.Shopper;
 import com.example.personalizeddataservice.service.ShopperService;
+import com.example.personalizeddataservice.util.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -35,7 +37,8 @@ public class ShopperController {
                     content = @Content(examples = @ExampleObject(value = "{\"shopperId\":\"shopperId\",\"firstName\":\"firstName\",\"lastName\":\"lastName\"}"))))
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ShopperDto> createShopper(@Valid @RequestBody ShopperDto shopperDto) {
-        return new ResponseEntity<>(this.shopperService.createShopper(shopperDto), HttpStatus.CREATED);
+        Shopper shopper = this.shopperService.createShopper(shopperDto);
+        return new ResponseEntity<>(ObjectMapper.mapShopperToShopperDto(shopper), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Get a shopper by id",
@@ -50,8 +53,8 @@ public class ShopperController {
             })
     @GetMapping(path = "/{shopperId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ShopperDto> getShopperById(@PathVariable String shopperId) {
-
-        return new ResponseEntity<>(this.shopperService.getShopperById(shopperId), HttpStatus.OK);
+        Shopper shopperById = this.shopperService.getShopperById(shopperId);
+        return new ResponseEntity<>(ObjectMapper.mapShopperToShopperDto(shopperById), HttpStatus.OK);
     }
 
     @Operation(summary = "Save Shopper's Personalized Products with the shopper",
@@ -66,6 +69,7 @@ public class ShopperController {
                     content = @Content(schema = @Schema(implementation = ShopperPersonalizedProductDto.class))))
     @PostMapping(path = "/personalized-products", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResultResponse> saveShopperPersonalizedProducts(@Valid @RequestBody ShopperPersonalizedProductDto shopperPersonalizedProductDto) {
-        return new ResponseEntity<>(this.shopperService.saveShopperWithPersonalizedProducts(shopperPersonalizedProductDto), HttpStatus.OK);
+        this.shopperService.saveShopperWithPersonalizedProducts(shopperPersonalizedProductDto);
+        return new ResponseEntity<>(new ResultResponse(HttpStatus.OK, HttpStatus.OK.name()), HttpStatus.OK);
     }
 }

@@ -1,12 +1,12 @@
 package com.example.personalizeddataservice.service;
 
-import com.example.personalizeddataservice.domain.dto.ResultResponse;
 import com.example.personalizeddataservice.domain.dto.ShopperDto;
 import com.example.personalizeddataservice.domain.dto.ShopperPersonalizedProductDto;
+import com.example.personalizeddataservice.domain.model.Shopper;
 
 public interface ShopperService {
-    ShopperDto createShopper(ShopperDto shopperDto);
+    Shopper createShopper(ShopperDto shopperDto);
 
-    ResultResponse saveShopperWithPersonalizedProducts(ShopperPersonalizedProductDto shopperPersonalizedProductDto);
-    ShopperDto getShopperById(String shopperId);
+    void saveShopperWithPersonalizedProducts(ShopperPersonalizedProductDto shopperPersonalizedProductDto);
+    Shopper getShopperById(String shopperId);
 }

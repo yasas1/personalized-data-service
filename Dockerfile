@@ -9,8 +9,8 @@ RUN mvn clean install -DskipTests
 FROM openjdk:17-jdk-slim
 WORKDIR /app
 
-COPY --from=build /app/target/personalized-data-service.jar ./app.jar
+COPY --from=build /app/target/personalized-data-service.jar ./personalized-data-service.jar
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "personalized-data-service.jar"]

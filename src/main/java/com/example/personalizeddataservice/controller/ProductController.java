@@ -1,7 +1,9 @@
 package com.example.personalizeddataservice.controller;
 
 import com.example.personalizeddataservice.domain.dto.ProductDto;
+import com.example.personalizeddataservice.domain.model.Product;
 import com.example.personalizeddataservice.service.ProductService;
+import com.example.personalizeddataservice.util.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -32,7 +34,8 @@ public class ProductController {
                     content = @Content(examples = @ExampleObject(value = "{\"productId\":\"productId\",\"category\":\"category\",\"brand\":\"brand\"}"))))
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProductDto> createProduct(@Valid @RequestBody ProductDto productDto) {
-        return new ResponseEntity<>(this.productService.createProduct(productDto), HttpStatus.CREATED);
+        Product product = this.productService.createProduct(productDto);
+        return new ResponseEntity<>(ObjectMapper.mapProductToProductDto(product), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Get a product by id",
@@ -47,6 +50,7 @@ public class ProductController {
             })
     @GetMapping(path = "/{productId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProductDto> getProductById(@PathVariable String productId) {
-        return new ResponseEntity<>(this.productService.getProductById(productId), HttpStatus.OK);
+        Product productById = this.productService.getProductById(productId);
+        return new ResponseEntity<>(ObjectMapper.mapProductToProductDto(productById), HttpStatus.OK);
     }
 }
