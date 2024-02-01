@@ -1,6 +1,8 @@
 package com.example.personalizeddataservice.controller;
 
+import com.example.personalizeddataservice.domain.dto.BulkProductDto;
 import com.example.personalizeddataservice.domain.dto.ProductDto;
+import com.example.personalizeddataservice.domain.dto.ResultResponse;
 import com.example.personalizeddataservice.domain.model.Product;
 import com.example.personalizeddataservice.service.ProductService;
 import com.example.personalizeddataservice.util.ObjectMapper;
@@ -36,6 +38,12 @@ public class ProductController {
     public ResponseEntity<ProductDto> createProduct(@Valid @RequestBody ProductDto productDto) {
         Product product = this.productService.createProduct(productDto);
         return new ResponseEntity<>(ObjectMapper.mapProductToProductDto(product), HttpStatus.CREATED);
+    }
+
+    @PostMapping(path = "/bulk", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResultResponse> createBulkProduct(@Valid @RequestBody BulkProductDto bulkProductDto) {
+        this.productService.createBulkProduct(bulkProductDto);
+        return new ResponseEntity<>(new ResultResponse(HttpStatus.CREATED, HttpStatus.CREATED.name()), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Get a product by id",

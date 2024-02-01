@@ -1,5 +1,6 @@
 package com.example.personalizeddataservice.service.impl;
 
+import com.example.personalizeddataservice.domain.dto.BulkProductDto;
 import com.example.personalizeddataservice.domain.dto.ProductDto;
 import com.example.personalizeddataservice.domain.model.Product;
 import com.example.personalizeddataservice.repository.ProductRepository;
@@ -11,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -20,6 +23,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product createProduct(ProductDto productDto) {
         return productRepository.save(ObjectMapper.mapProductDtoToProduct(productDto));
+    }
+
+    @Override
+    public void createBulkProduct(BulkProductDto bulkProductDto) {
+        this.productRepository.saveAll(bulkProductDto.getProducts().stream().map(ObjectMapper::mapProductDtoToProduct).toList());
     }
 
     @Cacheable(value = "products")
